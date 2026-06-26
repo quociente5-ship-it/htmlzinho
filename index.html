@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>HELLO YSE IZÉ</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+    font-family:Georgia,serif;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+
+#stars{
+    position:fixed;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    inset:0;
+}
+
+.star{
+    position:absolute;
+    width:2px;
+    height:2px;
+    background:white;
+    border-radius:50%;
+    opacity:0;
+    animation:twinkle 5s infinite;
+}
+
+@keyframes twinkle{
+
+0%{
+opacity:0;
+transform:scale(0.2);
+}
+
+50%{
+opacity:1;
+transform:scale(1.8);
+}
+
+100%{
+opacity:0;
+transform:scale(0.2);
+}
+
+}
+
+#containerNome{
+
+position:absolute;
+top:50%;
+left:50%;
+
+transform:
+translate(-50%,-50%);
+
+text-align:center;
+z-index:50;
+
+}
+
+#nome{
+
+font-size:80px;
+font-weight:bold;
+color:white;
+
+letter-spacing:8px;
+
+text-shadow:
+
+0 0 5px white,
+0 0 15px white,
+0 0 35px hotpink,
+0 0 70px deeppink;
+
+opacity:0;
+
+}
+
+.letra{
+
+display:inline-block;
+opacity:0;
+transform:
+translateY(60px)
+scale(.5);
+
+}
+
+/* ==========================
+        BGLH DE TCHOLA
+========================== */
+
+#frase{
+
+margin-top:40px;
+
+font-size:26px;
+
+color:white;
+
+opacity:0;
+
+text-shadow:
+0 0 10px white;
+
+transition:2s;
+
+}
+
+/* ==========================
+        FULÔ
+========================== */
+
+#garden{
+
+position:fixed;
+
+inset:0;
+
+overflow:hidden;
+
+pointer-events:none;
+
+}
+
+.flower{
+
+position:absolute;
+
+width:0;
+height:0;
+
+}
+
+.stem{
+
+position:absolute;
+
+width:6px;
+
+background:#2d8f48;
+
+transform-origin:bottom center;
+
+border-radius:10px;
+
+}
+
+.leaf{
+
+position:absolute;
+
+width:22px;
+height:12px;
+
+background:#3ec36c;
+
+border-radius:
+
+100% 0
+100% 0;
+
+transform-origin:left center;
+
+opacity:0;
+
+}
+
+.center{
+
+position:absolute;
+
+width:18px;
+height:18px;
+
+background:#ffe94f;
+
+border-radius:50%;
+
+left:-9px;
+top:-9px;
+
+box-shadow:
+
+0 0 15px gold;
+
+}
+
+.petal{
+
+position:absolute;
+
+width:22px;
+height:42px;
+
+border-radius:
+
+100% 100%
+0 0;
+
+transform-origin:
+bottom center;
+
+opacity:0;
+
+}
+
+.falling{
+
+position:absolute;
+
+pointer-events:none;
+
+opacity:.8;
+
+animation:
+fall linear forwards;
+
+}
+
+@keyframes fall{
+
+0%{
+
+transform:
+translateY(-100px)
+rotate(0deg);
+
+opacity:0;
+
+}
+
+10%{
+
+opacity:1;
+
+}
+
+100%{
+
+transform:
+translateY(120vh)
+translateX(120px)
+rotate(720deg);
+
+opacity:0;
+
+}
+
+}
+
+@keyframes bloom{
+
+0%{
+
+transform:
+scale(0);
+
+opacity:0;
+
+}
+
+100%{
+
+transform:
+scale(1);
+
+opacity:1;
+
+}
+
+}
+
+@keyframes leafGrow{
+
+0%{
+
+opacity:0;
+
+transform:
+scale(0)
+rotate(0deg);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:
+scale(1)
+rotate(40deg);
+
+}
+
+}
+
+@keyframes sway{
+
+0%{
+transform:rotate(-2deg);
+}
+
+50%{
+transform:rotate(2deg);
+}
+
+100%{
+transform:rotate(-2deg);
+}
+
+}
+
+.glow{
+
+animation:
+
+shine 3s infinite;
+
+}
+
+@keyframes shine{
+
+0%{
+
+text-shadow:
+0 0 10px white;
+
+}
+
+50%{
+
+text-shadow:
+
+0 0 15px white,
+0 0 35px hotpink,
+0 0 70px deeppink,
+0 0 120px violet;
+
+}
+
+100%{
+
+text-shadow:
+0 0 10px white;
+
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="stars"></div>
+
+<div id="garden"></div>
+
+<div id="containerNome">
+
+<div id="nome"></div>
+
+<div id="frase">
+
+"Ele desceu, evitando olhar longamente para ela
+como se olha para o sol, mas via-a, como ao sol,
+mesmo sem olhar"
+(Tolstoi, Liev. Anna Karenina)
+</div>
+
+</div>
+
+<script>
+
+const NOME = "ANA HELLO  YSE";
+
+const CORES = [
+
+"#ff4d6d",
+"#ff85a2",
+"#ffd6e0",
+"#ffffff",
+"#d291ff",
+"#ff9ecd"
+
+];
+
+const stars =
+document.getElementById("stars");
+
+const garden =
+document.getElementById("garden");
+
+const nome =
+document.getElementById("nome");
+
+const frase =
+document.getElementById("frase");
+
+for(let i=0;i<180;i++){
+
+const s=document.createElement("div");
+
+s.className="star";
+
+s.style.left=Math.random()*100+"%";
+s.style.top=Math.random()*100+"%";
+
+s.style.animationDelay=
+(Math.random()*5)+"s";
+
+s.style.animationDuration=
+(2+Math.random()*5)+"s";
+
+stars.appendChild(s);
+
+}
+
+function escreverNome(){
+
+nome.innerHTML="";
+
+let tempo=0;
+
+for(const letra of NOME){
+
+const span=document.createElement("span");
+
+span.className="letra";
+
+span.innerHTML = letra === " " ? "&nbsp;" : letra;
+
+nome.appendChild(span);
+
+setTimeout(()=>{
+
+span.style.transition="1.5s";
+
+span.style.opacity=1;
+
+span.style.transform=
+"translateY(0px) scale(1)";
+
+},tempo);
+
+tempo+=180;
+
+}
+
+setTimeout(()=>{
+
+nome.style.opacity=1;
+
+nome.classList.add("glow");
+
+},200);
+
+setTimeout(()=>{
+
+frase.style.opacity=1;
+
+},tempo+1200);
+
+}
+/*as frôs */
+function criarFlor(x,y,altura){
+
+const flower=document.createElement("div");
+
+flower.className="flower";
+
+flower.style.left=x+"px";
+flower.style.top=y+"px";
+
+garden.appendChild(flower);
+
+const stem=document.createElement("div");
+
+stem.className="stem";
+
+stem.style.height="0px";
+
+stem.style.left="-3px";
+
+stem.style.bottom="0px";
+
+stem.style.animation=
+"sway 5s infinite";
+
+flower.appendChild(stem);
+
+let h=0;
+
+const crescer=setInterval(()=>{
+
+h+=2;
+
+stem.style.height=h+"px";
+
+stem.style.bottom="0px";
+
+if(h>altura*0.35 && h<altura*0.37){
+
+criarFolha(stem,h);
+
+}
+
+if(h>=altura){
+
+clearInterval(crescer);
+
+abrirFlor(stem,h);
+
+}
+
+},16);
+
+}
+
+function criarFolha(stem,h){
+
+const leaf=document.createElement("div");
+
+leaf.className="leaf";
+
+leaf.style.bottom=h+"px";
+
+leaf.style.left="-2px";
+
+stem.appendChild(leaf);
+
+setTimeout(()=>{
+
+leaf.style.animation=
+"leafGrow 1s forwards";
+
+},100);
+
+}
+
+function abrirFlor(stem,h){
+
+const centro=
+document.createElement("div");
+
+centro.className="center";
+
+centro.style.bottom=
+(h-9)+"px";
+
+stem.appendChild(centro);
+
+for(let i=0;i<8;i++){
+
+const petal=
+document.createElement("div");
+
+petal.className="petal";
+
+petal.style.background=
+CORES[
+Math.floor(
+Math.random()*CORES.length
+)];
+
+petal.style.bottom=
+(h-10)+"px";
+
+petal.style.left="-11px";
+
+petal.style.transform=
+
+`rotate(${i*45}deg)
+translateY(-18px)
+scale(0)`;
+
+stem.appendChild(petal);
+
+setTimeout(()=>{
+
+petal.style.transition=
+"1.2s";
+
+petal.style.opacity=1;
+
+petal.style.transform=
+
+petal.style.transform =
+`rotate(${i * 45}deg) translateY(-18px) scale(1)`;
+}, 120);
+}
+
+setTimeout(() => {
+    soltarPetalas(x, y);
+}, 900);
+}
+
+/***************************************************
+        BGLH DE TCHOLA 2
+****************************************************/
+
+function soltarPetalas(x, y) {
+    for (let i = 0; i < 12; i++) {
+        const p = document.createElement("div");
+        p.className = "falling";
+
+        p.style.left = x + "px";
+        p.style.top = y + "px";
+
+        p.style.width = (6 + Math.random() * 6) + "px";
+        p.style.height = (10 + Math.random() * 10) + "px";
+
+        p.style.background =
+            CORES[Math.floor(Math.random() * CORES.length)];
+
+        p.style.animationDuration =
+            (4 + Math.random() * 4) + "s";
+
+        p.style.transform =
+            `rotate(${Math.random() * 360}deg)`;
+
+        document.body.appendChild(p);
+
+        setTimeout(() => {
+            p.remove();
+        }, 8000);
+    }
+}
+
+/***************************************************
+        HELLOYSE NORDESTINA COME MATO
+****************************************************/
+
+function iniciarJardim() {
+
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    for (let i = 0; i < 14; i++) {
+
+        setTimeout(() => {
+            criarFlor(
+                Math.random() * width,
+                height + 50,
+                120 + Math.random() * 120
+            );
+        }, i * 400);
+    }
+
+    for (let i = 0; i < 10; i++) {
+
+        setTimeout(() => {
+
+            const lado = Math.random() > 0.5 ? -50 : width + 50;
+
+            criarFlor(
+                lado,
+                Math.random() * height,
+                100 + Math.random() * 140
+            );
+
+        }, i * 500);
+    }
+}
+
+
+window.onload = () => {
+
+    setTimeout(() => {
+        escreverNome();
+    }, 1500);
+
+    setTimeout(() => {
+        iniciarJardim();
+    }, 3500);
+
+};
+
+window.onresize = () => {
+    
+    fireflies.length = 0;
+    firefliesContainer.innerHTML = "";
+    criarVagalumes();
+
+    starsContainer.innerHTML = "";
+    garden.innerHTML = "";
+
+    for (let i = 0; i < 180; i++) {
+        const s = document.createElement("div");
+        s.className = "star";
+
+        s.style.left = Math.random() * 100 + "%";
+        s.style.top = Math.random() * 100 + "%";
+
+        s.style.animationDelay = (Math.random() * 5) + "s";
+        s.style.animationDuration = (2 + Math.random() * 5) + "s";
+
+        starsContainer.appendChild(s);
+    }
+};
+
+</script>
+
+</body>
+</html>
