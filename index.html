@@ -372,14 +372,22 @@ text-shadow:
 
 }
 
+/* Accessibility: respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 </style>
 </head>
 
 <body>
 
-<div id="stars"></div>
+<div id="stars" aria-hidden="true" role="presentation"></div>
 
-<div id="garden"></div>
+<div id="garden" aria-hidden="true" role="presentation"></div>
 
 <div id="containerNome">
 
@@ -422,24 +430,20 @@ document.getElementById("nome");
 const frase =
 document.getElementById("frase");
 
-for(let i=0;i<180;i++){
-
-const s=document.createElement("div");
-
-s.className="star";
-
-s.style.left=Math.random()*100+"%";
-s.style.top=Math.random()*100+"%";
-
-s.style.animationDelay=
-(Math.random()*5)+"s";
-
-s.style.animationDuration=
-(2+Math.random()*5)+"s";
-
-stars.appendChild(s);
-
-}
+// cria estrelas (usando fragment para performance)
+(function criarEstrelas(){
+    const frag = document.createDocumentFragment();
+    for(let i=0;i<180;i++){
+        const s=document.createElement("div");
+        s.className="star";
+        s.style.left=Math.random()*100+"%";
+        s.style.top=Math.random()*100+"%";
+        s.style.animationDelay=(Math.random()*5)+"s";
+        s.style.animationDuration=(2+Math.random()*5)+"s";
+        frag.appendChild(s);
+    }
+    stars.appendChild(frag);
+})();
 
 function escreverNome(){
 
@@ -534,7 +538,7 @@ if(h>=altura){
 
 clearInterval(crescer);
 
-abrirFlor(stem,h);
+abrirFlor(stem,h,x,y);
 
 }
 
@@ -563,7 +567,7 @@ leaf.style.animation=
 
 }
 
-function abrirFlor(stem,h){
+function abrirFlor(stem,h,x,y){
 
 const centro=
 document.createElement("div");
@@ -594,10 +598,7 @@ petal.style.bottom=
 petal.style.left="-11px";
 
 petal.style.transform=
-
-`rotate(${i*45}deg)
-translateY(-18px)
-scale(0)`;
+`rotate(${i*45}deg) translateY(-18px) scale(0)`;
 
 stem.appendChild(petal);
 
@@ -608,14 +609,12 @@ petal.style.transition=
 
 petal.style.opacity=1;
 
-petal.style.transform=
-
-petal.style.transform =
-`rotate(${i * 45}deg) translateY(-18px) scale(1)`;
+petal.style.transform = `rotate(${i * 45}deg) translateY(-18px) scale(1)`;
 }, 120);
 }
 
 setTimeout(() => {
+    // solta pétalas a partir da posição da flor
     soltarPetalas(x, y);
 }, 900);
 }
@@ -702,26 +701,26 @@ window.onload = () => {
 };
 
 window.onresize = () => {
-    
-    fireflies.length = 0;
-    firefliesContainer.innerHTML = "";
-    criarVagalumes();
-
-    starsContainer.innerHTML = "";
+    // limpar estrelas e jardim e recriar
+    stars.innerHTML = "";
     garden.innerHTML = "";
 
+    // recria estrelas
+    const frag = document.createDocumentFragment();
     for (let i = 0; i < 180; i++) {
         const s = document.createElement("div");
         s.className = "star";
-
         s.style.left = Math.random() * 100 + "%";
         s.style.top = Math.random() * 100 + "%";
-
         s.style.animationDelay = (Math.random() * 5) + "s";
         s.style.animationDuration = (2 + Math.random() * 5) + "s";
-
-        starsContainer.appendChild(s);
+        frag.appendChild(s);
     }
+    stars.appendChild(frag);
+
+    // reinicia o jardim (opcional)
+    // cancelar possíveis flores em andamento pode precisar de lógica extra
+    iniciarJardim();
 };
 
 </script>
